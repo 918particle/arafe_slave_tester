@@ -5,8 +5,8 @@
  *      Author: barawn
  */
 
-#ifndef USCI_UART_CONFIG_H_
-#define USCI_UART_CONFIG_H_
+#ifndef ARAFE_SLAVE_TESTER_TYLER_USCI_UART_CONFIG_H_
+#define ARAFE_SLAVE_TESTER_TYLER_USCI_UART_CONFIG_H_
 
 #include <msp430.h>
 
@@ -42,4 +42,4 @@
 
 #define USCI_UART_PRINTF
 
-#endif /* USCI_UART_CONFIG_H_ */
+#endif /* ARAFE_SLAVE_TESTER_TYLER_USCI_UART_CONFIG_H_ */

@@ -70,14 +70,15 @@ static void usci_uart_puth(unsigned n)
 void usci_uart_printf(char *format, ...)
 {
     char c;
-    int i;
+    int i; //blah;
     long n;
 
     va_list a;
     va_start(a, format);
     while(c = *format++) {
         if(c == '%') {
-            switch(c = *format++) {
+        	//blah = *format++;
+            switch(c = *format++) {//I don't think it is getting here, so it is never getting to this if statement
                 case 's':                       // String
                     usci_uart_puts(va_arg(a, char*));
                     break;

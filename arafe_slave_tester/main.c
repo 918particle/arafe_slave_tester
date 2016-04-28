@@ -18,9 +18,12 @@ event_t *const arafe_tx_event = &timer_uart_tx_event;
 // P1.2: USCI_A0 TX
 // P1.3: capture- (CA3)
 // That's all we need.
+
 void event_ignore() {}
 
-void rx_char() {
+
+
+void usci_rx_char() {
 	uint8_t num_chars;
 	event_clear(&usci_uart_rx_event);
 
@@ -43,27 +46,20 @@ int main(void) {
     // Transmit events are ignored and disabled.
     event_handler_init(&usci_uart_tx_event, event_ignore, false);
     // Rx events trigger the receive character handling.
-    event_handler_init(&usci_uart_rx_event, rx_char, true);
+    event_handler_init(&usci_uart_rx_event, usci_rx_char, true);
     // Timer UART transmit events loop through the TX state machine handler.
     event_handler_init(&timer_uart_tx_event, arafe_tx_handler, true);
-
+    timer_uart_init();
     usci_uart_init();
     usci_uart_irq_control(true);
     __enable_interrupt();
-	usci_uart_puts("ARAFE Slave Tester:\r\n");
+
+
+	usci_uart_puts("ARAFE Slave Tester: Input values in base 10.\r\n");
 	cli_print_prompt();
 	while (1) {
 		event_process();
 		usci_uart_tx_process();
-		if (!arafe_busy()) {
-			if (!sent_already) {
-				__delay_cycles(65535);
-				arafe_command = ARAFE_COMMAND_5V;
-				arafe_argument = 0;
-				arafe_send_command();
-			}
-			sent_already = 1;
-		}
 		event_sleep();
     }
 }

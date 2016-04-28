@@ -8,7 +8,7 @@
 	.global		usci_uart_tx_buffer_read_ptr
 
 	;; Receive ISR.
-usci_uart_RX_ISR: .asmfunc
+usci_uart_RX_ISR: .asmfunc ;Gets here
 	;; Store r15
 	push		r15
 	mov.b		&usci_uart_rx_buffer_write_ptr, r15

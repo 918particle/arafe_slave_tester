@@ -5,8 +5,8 @@
  *      Author: barawn
  */
 
-#ifndef USCI_UART_H_
-#define USCI_UART_H_
+#ifndef ARAFE_SLAVE_TESTER_TYLER_USCI_UART_H_
+#define ARAFE_SLAVE_TESTER_TYLER_USCI_UART_H_
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -89,4 +89,4 @@ void usci_uart_puts(const char *string);
 void usci_uart_printf(char *format, ...);
 #endif
 
-#endif /* USCI_UART_H_ */
+#endif /* ARAFE_SLAVE_TESTER_TYLER_USCI_UART_H_ */

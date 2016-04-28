@@ -1,6 +1,8 @@
 #ifndef _CLI_COMMANDS_H
 #define _CLI_COMMANDS_H
 
+
+
 #include "cli.h"
 #include <stdint.h>
 
@@ -25,7 +27,9 @@
                     {"control", cmd_control },\
                     {"5v", cmd_5v },\
 					{"sig", cmd_sig },\
-					{"trig", cmd_trig }
+					{"trig", cmd_trig },\
+					{"sensor", cmd_sensor },\
+					{"12v", cmd_12v }
 
 // Custom command function prototypes:
 int cmd_dump(uint16_t argc, char *argv[]);
@@ -34,7 +38,9 @@ int cmd_write(uint16_t argc, char *argv[]);
 int cmd_flash(uint16_t argc, char *argv[]);
 int cmd_control(uint16_t argc, char *argv[]);
 int cmd_5v(uint16_t argc, char *argv[]);
+int cmd_12v(uint16_t argc, char *argv[]);
 int cmd_sig(uint16_t argc, char *argv[]);
 int cmd_trig(uint16_t argc, char *argv[]);
+int cmd_sensor(uint16_t argc, char *argv[]);
 
 #endif

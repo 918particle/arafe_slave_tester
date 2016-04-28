@@ -4,15 +4,21 @@
  *  Created on: Nov 20, 2014
  *      Author: barawn
  *
+ *	To Do:
+ *		1) Write Dump. Complicated. Need help of Patrick
  *
  *
+ *	Done: -Wrote check_arguments to accomodate different argument quantities
+ *		  -Wrote flash functiom, works
+ *		  -Write stuff for 12v EN
  */
 
 #include <stdio.h>
 #include "cli_commands.h"
 #include "usci_uart.h"
-
 #include "arafe.h"
+
+
 
 //==================================================================================================
 // Device-specific output functions
@@ -38,7 +44,8 @@ void cli_print_error(int error){
 
 void cli_print_notfound(char *strcmd){
     cli_puts("commands:\r\n");
-    cli_puts("5v control sig trig\r\n");
+    cli_puts("5v 12v control sig trig \r\n");
+    cli_puts("read write flash dump sensor\r\n");
 }
 
 /*
@@ -46,47 +53,19 @@ void cli_print_notfound(char *strcmd){
  *
  * dump
  * read #
- * write #
+ * write # #
  * flash
  * control #0 #1 where #0 = 0,1,2,3 and #1 = 0,1 (for on, off)
  * 5v # where #=0,1
+ * 12v # where #=0,1
  * sig #0 #1 where #0=0,1,2,3 and #1 = 0-31.
  * trig #0 #1 where #0=0,1,2,3 and #1 = 0-31.
+ * sensor #0-2
  *
  */
 
-/* Not used anymore now that we have all-encompassing check_arguments
- * bool check_2_arguments(uint16_t argc, char *argv[], uint8_t arg2_limit, char *errstr) {
-	char *arg;
-	if (argc < 3) goto err_msg;
-	arafe_command = (*argv[1] - '0');
-	if (arafe_command > 3) goto err_msg;
-	arg = argv[2];
-	arafe_argument = (arg[0] - '0');
-	if (arg[1] != 0x0) {
-		arafe_argument = arafe_argument * 10;
-		arafe_argument += arg[1]-'0';
-		if (arg[2] != 0x0) {
-			if (arafe_argument < 26) {
-				arafe_argument = arafe_argument * 10;
-				if (0xFF - arafe_argument < arg[2]-'0') {
-					goto err_msg;
-				} else {
-					arafe_argument += arg[2] - '0';
-				}
-			} else {
-				goto err_msg;
-			}
-		}
-	}
-	if (arafe_argument > arg2_limit) goto err_msg;
-	return true;
-err_msg:
-	usci_uart_puts(errstr);
-	return false;
-}
-*/
-//Begin check_arguments prototyping function writing(a universal check arguments function)
+
+
 bool check_arguments(uint16_t argc, char *argv[], uint8_t num_args, uint8_t arg1_limit, uint8_t arg2_limit, char *errstr) {
 	//argc -> counts the number of things in argv +1; argv -> holds each input as a slot in an array;  num_args -> number of arguments that the function string expects(NOT INCLUDING STRING),
 	//arg1_limit -> limit for argv[1]; arg2_limit -> limit for argv[2]; errstr -> string for error message
@@ -135,10 +114,7 @@ err_msg:
 	return false;//Implode
 }
 
- //End function prototyping/////////////////////////////////////
-
-
-
+//Begin command functions
 int cmd_5v(uint16_t argc, char *argv[]) {
 	if (argc < 2) goto err_msg;
 	arafe_argument = (*argv[1] - '0');
@@ -151,9 +127,21 @@ err_msg:
 	return 0;
 }
 
+int cmd_12v(uint16_t argc, char *argv[]) {
+	if (argc < 2) goto err_msg;
+	arafe_argument = (*argv[1] - '0');
+	if (arafe_argument > 1) goto err_msg;
+	arafe_command = ARAFE_COMMAND_12V;
+	arafe_send_command();
+	return 0;
+err_msg:
+	usci_uart_puts("12v 0/1\r\n");
+	return 0;
+}
+
 
 //cmd_something(uint16_t argc, argv, numargs, arg1_limit, arg2_limit, errstr) NOTE: num_args is the total number of arguments, so the 'string' argument plus whichever others.
-int cmd_control(uint16_t argc, char *argv[]) { //WORKS w/ check_arguments
+int cmd_control(uint16_t argc, char *argv[]) {
 	// Input checking.
 	if (check_arguments(argc, argv, 3, 3, 1, "control 0-3 0/1\r\n")) {
 		arafe_command |= 0x8;
@@ -162,13 +150,13 @@ int cmd_control(uint16_t argc, char *argv[]) { //WORKS w/ check_arguments
 	return 0;
 }
 
-int cmd_sig(uint16_t argc, char *argv[]) {//WORKS
+int cmd_sig(uint16_t argc, char *argv[]) {
 	if (check_arguments(argc, argv, 3, 3, 31, "sig 0-3 0-31\r\n")) arafe_send_command();
 	return 0;
 }
 
 
-int cmd_trig(uint16_t argc, char *argv[]) {//WORKS
+int cmd_trig(uint16_t argc, char *argv[]) {
 	if (check_arguments(argc, argv, 3, 3, 31, "trig 0-3 0-31\r\n")) {
 		arafe_command |= 0x4;
 		arafe_send_command();
@@ -177,7 +165,11 @@ int cmd_trig(uint16_t argc, char *argv[]) {//WORKS
 }
 
 int cmd_dump(uint16_t argc, char *argv[]) {
-	// This is more complicated. Deal with it later.
+	// All we need to do is change this global variable to true, and tx_char will do the rest.
+	dump_status = 1;
+	arafe_command = 0x40; // Seed for read, do not |=, else it will remember the last command
+	// No need to seed arafe_argument, as it is normally embedded in the arafe_command
+	arafe_send_command();
 	return 0;
 }
 
@@ -200,6 +192,14 @@ int cmd_write(uint16_t argc, char *argv[]) {
 		arafe_command |= 0x80;
 		arafe_send_command();
 		}
+	return 0;
+}
+
+int cmd_sensor(uint16_t argc, char *argv[]) {
+	if (check_arguments(argc, argv, 2, 7, 0, "sensor 0-7\r\n")) {
+		arafe_command |= 0x10;
+		arafe_send_command();
+	}
 	return 0;
 }
 

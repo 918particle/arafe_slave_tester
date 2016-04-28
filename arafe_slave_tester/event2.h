@@ -34,8 +34,8 @@
  *      Author: barawn
  */
 
-#ifndef EVENT2_H_
-#define EVENT2_H_
+#ifndef ARAFE_SLAVE_TESTER_TYLER_EVENT2_H_
+#define ARAFE_SLAVE_TESTER_TYLER_EVENT2_H_
 
 #include <msp430.h>
 #include <stdint.h>
@@ -160,4 +160,4 @@ static inline void event_queue_interruptible(event_t *p) {
 	__enable_interrupt();
 }
 
-#endif /* EVENT2_H_ */
+#endif /* ARAFE_SLAVE_TESTER_TYLER_EVENT2_H_ */
