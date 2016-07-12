@@ -87,7 +87,7 @@ static inline uint8_t rx_char() {
 	TA1CTL = TASSEL_2 + ID_0 + MC_2 + TACLR; // Start Timer A1 Control, counting up to 0xFFFFFh continuously
 	TA1CCTL2 = CCIE; // Enable timer interrupt
 
-	LPM0; // Go to sleep
+	__bis_SR_register(LPM0); // Go to sleep
 
 	// After wake-up
 	CACTL1 &= ~CAIE; // Only want to disable the comparator interrupt.  If we stop it completely, it will never wake up ever

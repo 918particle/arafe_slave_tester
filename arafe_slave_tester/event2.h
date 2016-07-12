@@ -111,7 +111,7 @@ static inline void event_set_handler(event_t *p, event_handler_t handler) {
 
 //< This code checks to see if there are events pending, and then sleeps.
 static inline void event_sleep() {
-	if ((uint16_t) event_head != (event_t *) EVENT_TAIL) goto event_sleep_wakeup;
+	if ((uint16_t) event_head != EVENT_TAIL) goto event_sleep_wakeup;
 	__disable_interrupt();
 	asm("\t cmp.w	#0xFFFF, r4\n"
 		"\t jne 	event_sleep_wakeup?\n"

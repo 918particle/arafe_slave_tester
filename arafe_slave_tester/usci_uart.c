@@ -7,6 +7,7 @@
 
 #define USCI_UART_C
 #include "usci_uart.h"
+#include <stdarg.h>
 
 #pragma NOINIT(usci_uart_tx_pending)
 uint8_t usci_uart_tx_pending;
