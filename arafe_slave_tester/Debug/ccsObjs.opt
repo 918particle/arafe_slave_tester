@@ -1,1 +1,0 @@
-"./arafe.obj" "./cli.obj" "./cli_commands.obj" "./event2.obj" "./event2_asm.obj" "./main.obj" "./timer_uart.obj" "./timer_uart_asm.obj" "./usci_uart.obj" "./usci_uart_asm.obj" "../lnk_msp430g2553.cmd" -l"libc.a" 
