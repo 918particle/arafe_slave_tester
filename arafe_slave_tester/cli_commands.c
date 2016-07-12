@@ -43,7 +43,6 @@ void cli_print_error(int error){
 }
 
 void cli_print_notfound(char *strcmd){
-    cli_puts("commands:\r\n");
     cli_puts("5v 12v control sig trig \r\n");
     cli_puts("read write flash dump sensor\r\n");
 }
