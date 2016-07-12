@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v4.4.5                      
 ******************************************************************************
->> Linked Wed Feb 03 14:04:53 2016
+>> Linked Tue Jul 12 12:13:40 2016
 
 OUTPUT FILE NAME:   <arafe_slave_tester.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 0000cf7e
+ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 0000cfb8
 
 
 MEMORY CONFIGURATION
@@ -19,7 +19,7 @@ MEMORY CONFIGURATION
   INFOC                 00001040   00000040  00000000  00000040  RWIX
   INFOB                 00001080   00000040  00000000  00000040  RWIX
   INFOA                 000010c0   00000040  00000000  00000040  RWIX
-  FLASH                 0000c000   00003fe0  000012cc  00002d14  RWIX
+  FLASH                 0000c000   00003fe0  0000131a  00002cc6  RWIX
   INT00                 0000ffe0   00000002  00000002  00000000  RWIX
   INT01                 0000ffe2   00000002  00000000  00000002  RWIX
   INT02                 0000ffe4   00000002  00000002  00000000  RWIX
@@ -65,54 +65,55 @@ section   page    origin      length       input sections
                   000003b0    00000002     rts430_eabi.lib : boot.obj (.stack)
                   000003b2    0000004e     --HOLE--
 
-.text      0    0000c000    0000101a     
-                  0000c000    00000754     arafe.obj (.text:arafe_tx_handler)
-                  0000c754    0000016c     cli.obj (.text:cli_process_char)
-                  0000c8c0    0000012c     usci_uart.obj (.text:usci_uart_printf)
-                  0000c9ec    000000d8     cli_commands.obj (.text:check_arguments)
-                  0000cac4    000000d0     main.obj (.text:main)
-                  0000cb94    000000a4     timer_uart_asm.obj (.text)
-                  0000cc38    0000007e     usci_uart_asm.obj (.text)
-                  0000ccb6    00000070     usci_uart.obj (.text:usci_uart_xtoa$5)
-                  0000cd26    00000058     rts430_eabi.lib : autoinit.obj (.text:_auto_init)
-                  0000cd7e    0000003c     main.obj (.text:usci_rx_char)
-                  0000cdba    00000030     cli_commands.obj (.text:cmd_5v)
-                  0000cdea    0000002c     cli_commands.obj (.text:cmd_trig)
-                  0000ce16    0000002c     cli_commands.obj (.text:cmd_write)
-                  0000ce42    0000002c     rts430_eabi.lib : asr16.obj (.text)
-                  0000ce6e    0000002c     usci_uart.obj (.text:usci_uart_tx_process)
-                  0000ce9a    0000002a     cli_commands.obj (.text:cmd_control)
-                  0000cec4    0000002a     cli_commands.obj (.text:cmd_read)
-                  0000ceee    0000002a     cli_commands.obj (.text:cmd_sensor)
-                  0000cf18    00000028     cli_commands.obj (.text:cmd_sig)
-                  0000cf40    00000020     usci_uart.obj (.text:usci_uart_puts)
-                  0000cf60    0000001e     usci_uart.obj (.text:usci_uart_puth$5)
-                  0000cf7e    0000001a     rts430_eabi.lib : boot_special.obj (.text:_c_int00_noargs_noexit)
-                  0000cf98    00000012     cli_commands.obj (.text:cmd_dump)
-                  0000cfaa    00000012     rts430_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  0000cfbc    00000010                     : memcpy.obj (.text:memcpy)
-                  0000cfcc    00000010                     : epilog.obj (.text)
-                  0000cfdc    00000010     timer_uart.obj (.text:timeout_isr)
-                  0000cfec    0000000e     cli_commands.obj (.text:cmd_flash)
-                  0000cffa    00000008     arafe.obj (.text:arafe_send_command)
-                  0000d002    00000008     cli_commands.obj (.text:cli_print_prompt)
-                  0000d00a    00000006     rts430_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
-                  0000d010    00000004                     : pre_init.obj (.text:_system_pre_init)
-                  0000d014    00000004                     : exit.obj (.text:abort)
-                  0000d018    00000002     main.obj (.text:event_ignore)
+.text      0    0000c000    00001054     
+                  0000c000    00000766     arafe.obj (.text:arafe_tx_handler)
+                  0000c766    00000164     cli.obj (.text:cli_process_char)
+                  0000c8ca    0000012c     usci_uart.obj (.text:usci_uart_printf)
+                  0000c9f6    000000d8     cli_commands.obj (.text:check_arguments)
+                  0000cace    000000d0     main.obj (.text:main)
+                  0000cb9e    000000a4     timer_uart_asm.obj (.text)
+                  0000cc42    0000007e     usci_uart_asm.obj (.text)
+                  0000ccc0    00000070     usci_uart.obj (.text:usci_uart_xtoa$5)
+                  0000cd30    00000058     rts430_eabi.lib : autoinit.obj (.text:_auto_init)
+                  0000cd88    0000003c     main.obj (.text:usci_rx_char)
+                  0000cdc4    00000030     cli_commands.obj (.text:cmd_12v)
+                  0000cdf4    00000030     cli_commands.obj (.text:cmd_5v)
+                  0000ce24    0000002c     cli_commands.obj (.text:cmd_trig)
+                  0000ce50    0000002c     cli_commands.obj (.text:cmd_write)
+                  0000ce7c    0000002c     rts430_eabi.lib : asr16.obj (.text)
+                  0000cea8    0000002c     usci_uart.obj (.text:usci_uart_tx_process)
+                  0000ced4    0000002a     cli_commands.obj (.text:cmd_control)
+                  0000cefe    0000002a     cli_commands.obj (.text:cmd_read)
+                  0000cf28    0000002a     cli_commands.obj (.text:cmd_sensor)
+                  0000cf52    00000028     cli_commands.obj (.text:cmd_sig)
+                  0000cf7a    00000020     usci_uart.obj (.text:usci_uart_puts)
+                  0000cf9a    0000001e     usci_uart.obj (.text:usci_uart_puth$5)
+                  0000cfb8    0000001a     rts430_eabi.lib : boot_special.obj (.text:_c_int00_noargs_noexit)
+                  0000cfd2    00000012     cli_commands.obj (.text:cmd_dump)
+                  0000cfe4    00000012     rts430_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  0000cff6    00000010                     : memcpy.obj (.text:memcpy)
+                  0000d006    00000010                     : epilog.obj (.text)
+                  0000d016    00000010     timer_uart.obj (.text:timeout_isr)
+                  0000d026    0000000e     cli_commands.obj (.text:cmd_flash)
+                  0000d034    00000008     arafe.obj (.text:arafe_send_command)
+                  0000d03c    00000008     cli_commands.obj (.text:cli_print_prompt)
+                  0000d044    00000006     rts430_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
+                  0000d04a    00000004                     : pre_init.obj (.text:_system_pre_init)
+                  0000d04e    00000004                     : exit.obj (.text:abort)
+                  0000d052    00000002     main.obj (.text:event_ignore)
 
-.const     0    0000d01a    00000298     
-                  0000d01a    0000020c     <whole-program> (.const:.string)
-                  0000d226    00000030     main.obj (.const:.string)
-                  0000d256    00000028     usci_uart.obj (.const:usci_uart_dv$5)
-                  0000d27e    00000024     cli.obj (.const:CommandTable$1)
-                  0000d2a2    00000010     usci_uart.obj (.const:.string:hex$1$5)
+.const     0    0000d054    000002ac     
+                  0000d054    0000021c     <whole-program> (.const:.string)
+                  0000d270    00000030     main.obj (.const:.string)
+                  0000d2a0    00000028     cli.obj (.const:CommandTable$1)
+                  0000d2c8    00000028     usci_uart.obj (.const:usci_uart_dv$5)
+                  0000d2f0    00000010     usci_uart.obj (.const:.string:hex$1$5)
 
-.cinit     0    0000d2b2    0000001a     
-                  0000d2b2    00000013     (.cinit..data.load) [load image]
-                  0000d2c5    00000001     --HOLE-- [fill = 0]
-                  0000d2c6    00000002     (__TI_handler_table)
-                  0000d2c8    00000004     (__TI_cinit_table)
+.cinit     0    0000d300    0000001a     
+                  0000d300    00000013     (.cinit..data.load) [load image]
+                  0000d313    00000001     --HOLE-- [fill = 0]
+                  0000d314    00000002     (__TI_handler_table)
+                  0000d316    00000004     (__TI_cinit_table)
 
 .init_array 
 *          0    0000c000    00000000     UNINITIALIZED
@@ -169,13 +170,13 @@ NMI        0    0000fffc    00000002
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 0000d2c8 records: 1, size/record: 4, table size: 4
-	.data: load addr=0000d2b2, load size=00000013 bytes, run addr=000002ac, run size=0000000f bytes, compression=copy
+__TI_cinit_table @ 0000d316 records: 1, size/record: 4, table size: 4
+	.data: load addr=0000d300, load size=00000013 bytes, run addr=000002ac, run size=0000000f bytes, compression=copy
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 0000d2c6 records: 1, size/record: 2, table size: 2
+__TI_handler_table @ 0000d314 records: 1, size/record: 2, table size: 2
 	index: 0, handler: __TI_decompress_none
 
 
@@ -193,7 +194,7 @@ address   name
 00000057  BCSCTL1                      
 00000058  BCSCTL2                      
 00000053  BCSCTL3                      
-0000d014  C$$EXIT                      
+0000d04e  C$$EXIT                      
 00000059  CACTL1                       
 0000005a  CACTL2                       
 000010fb  CALBC1_12MHZ                 
@@ -284,14 +285,14 @@ address   name
 00000120  WDTCTL                       
 00000400  __STACK_END                  
 00000050  __STACK_SIZE                 
-0000d2c8  __TI_CINIT_Base              
-0000d2cc  __TI_CINIT_Limit             
-0000d2c6  __TI_Handler_Table_Base      
-0000d2c8  __TI_Handler_Table_Limit     
+0000d316  __TI_CINIT_Base              
+0000d31a  __TI_CINIT_Limit             
+0000d314  __TI_Handler_Table_Base      
+0000d316  __TI_Handler_Table_Limit     
 UNDEFED   __TI_INITARRAY_Base          
 UNDEFED   __TI_INITARRAY_Limit         
-0000d00a  __TI_ISR_TRAP                
-0000cfaa  __TI_decompress_none         
+0000d044  __TI_ISR_TRAP                
+0000cfe4  __TI_decompress_none         
 0000ffe0  __TI_int00                   
 0000ffe4  __TI_int02                   
 0000ffe6  __TI_int03                   
@@ -307,70 +308,71 @@ UNDEFED   __TI_INITARRAY_Limit
 0000fffc  __TI_int14                   
 ffffffff  __binit__                    
 ffffffff  __c_args__                   
-0000cfd8  __mspabi_func_epilog_1       
-0000cfd6  __mspabi_func_epilog_2       
-0000cfd4  __mspabi_func_epilog_3       
-0000cfd2  __mspabi_func_epilog_4       
-0000cfd0  __mspabi_func_epilog_5       
-0000cfce  __mspabi_func_epilog_6       
-0000cfcc  __mspabi_func_epilog_7       
-0000ce42  __mspabi_srai                
-0000ce6a  __mspabi_srai_1              
-0000ce58  __mspabi_srai_10             
-0000ce56  __mspabi_srai_11             
-0000ce54  __mspabi_srai_12             
-0000ce52  __mspabi_srai_13             
-0000ce50  __mspabi_srai_14             
-0000ce4e  __mspabi_srai_15             
-0000ce68  __mspabi_srai_2              
-0000ce66  __mspabi_srai_3              
-0000ce64  __mspabi_srai_4              
-0000ce62  __mspabi_srai_5              
-0000ce60  __mspabi_srai_6              
-0000ce5e  __mspabi_srai_7              
-0000ce5c  __mspabi_srai_8              
-0000ce5a  __mspabi_srai_9              
-0000cd26  _auto_init                   
-0000cf7e  _c_int00_noargs_noexit       
+0000d012  __mspabi_func_epilog_1       
+0000d010  __mspabi_func_epilog_2       
+0000d00e  __mspabi_func_epilog_3       
+0000d00c  __mspabi_func_epilog_4       
+0000d00a  __mspabi_func_epilog_5       
+0000d008  __mspabi_func_epilog_6       
+0000d006  __mspabi_func_epilog_7       
+0000ce7c  __mspabi_srai                
+0000cea4  __mspabi_srai_1              
+0000ce92  __mspabi_srai_10             
+0000ce90  __mspabi_srai_11             
+0000ce8e  __mspabi_srai_12             
+0000ce8c  __mspabi_srai_13             
+0000ce8a  __mspabi_srai_14             
+0000ce88  __mspabi_srai_15             
+0000cea2  __mspabi_srai_2              
+0000cea0  __mspabi_srai_3              
+0000ce9e  __mspabi_srai_4              
+0000ce9c  __mspabi_srai_5              
+0000ce9a  __mspabi_srai_6              
+0000ce98  __mspabi_srai_7              
+0000ce96  __mspabi_srai_8              
+0000ce94  __mspabi_srai_9              
+0000cd30  _auto_init                   
+0000cfb8  _c_int00_noargs_noexit       
 0000fffe  _reset_vector                
 000003b0  _stack                       
-0000d010  _system_pre_init             
-0000d014  abort                        
+0000d04a  _system_pre_init             
+0000d04e  abort                        
 000002a9  arafe_argument               
 000002a8  arafe_command                
-0000cffa  arafe_send_command           
+0000d034  arafe_send_command           
 0000c000  arafe_tx_handler             
 ffffffff  binit                        
-0000c9ec  check_arguments              
-0000d002  cli_print_prompt             
-0000c754  cli_process_char             
-0000cdba  cmd_5v                       
-0000ce9a  cmd_control                  
-0000cf98  cmd_dump                     
-0000cfec  cmd_flash                    
-0000cec4  cmd_read                     
-0000ceee  cmd_sensor                   
-0000cf18  cmd_sig                      
-0000cdea  cmd_trig                     
-0000ce16  cmd_write                    
+0000c9f6  check_arguments              
+0000d03c  cli_print_prompt             
+0000c766  cli_process_char             
+0000cdc4  cmd_12v                      
+0000cdf4  cmd_5v                       
+0000ced4  cmd_control                  
+0000cfd2  cmd_dump                     
+0000d026  cmd_flash                    
+0000cefe  cmd_read                     
+0000cf28  cmd_sensor                   
+0000cf52  cmd_sig                      
+0000ce24  cmd_trig                     
+0000ce50  cmd_write                    
 000002ac  dump_status                  
 000002aa  event_head                   
-0000d018  event_ignore                 
+0000d052  event_ignore                 
 000002ae  m                            
-0000cac4  main                         
-0000cfbc  memcpy                       
+0000cace  main                         
+0000cff6  memcpy                       
 000002a6  rx_bits                      
 000002ba  rx_ok                        
 0000029a  rxc                          
 00000296  timeout_FLAG                 
-0000cfdc  timeout_isr                  
+0000d016  timeout_isr                  
 000002a4  timer1_isr_next_step         
 000002a0  timer_uart_rx_event          
 0000029c  timer_uart_tx_event          
 00000298  tx_char_pending              
-0000cd7e  usci_rx_char                 
-0000c8c0  usci_uart_printf             
-0000cf40  usci_uart_puts               
+0000cd88  usci_rx_char                 
+0000c8ca  usci_uart_printf             
+0000cf7a  usci_uart_puts               
 0000024c  usci_uart_rx_buffer          
 000002b8  usci_uart_rx_buffer_read_ptr 
 000002b7  usci_uart_rx_buffer_write_ptr
@@ -381,7 +383,7 @@ ffffffff  binit
 000002b6  usci_uart_tx_buffer_write_ptr
 00000244  usci_uart_tx_event           
 00000254  usci_uart_tx_pending         
-0000ce6e  usci_uart_tx_process         
+0000cea8  usci_uart_tx_process         
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -513,61 +515,62 @@ address   name
 000010fe  CALDCO_1MHZ                  
 000010ff  CALBC1_1MHZ                  
 0000c000  arafe_tx_handler             
-0000c754  cli_process_char             
-0000c8c0  usci_uart_printf             
-0000c9ec  check_arguments              
-0000cac4  main                         
-0000cd26  _auto_init                   
-0000cd7e  usci_rx_char                 
-0000cdba  cmd_5v                       
-0000cdea  cmd_trig                     
-0000ce16  cmd_write                    
-0000ce42  __mspabi_srai                
-0000ce4e  __mspabi_srai_15             
-0000ce50  __mspabi_srai_14             
-0000ce52  __mspabi_srai_13             
-0000ce54  __mspabi_srai_12             
-0000ce56  __mspabi_srai_11             
-0000ce58  __mspabi_srai_10             
-0000ce5a  __mspabi_srai_9              
-0000ce5c  __mspabi_srai_8              
-0000ce5e  __mspabi_srai_7              
-0000ce60  __mspabi_srai_6              
-0000ce62  __mspabi_srai_5              
-0000ce64  __mspabi_srai_4              
-0000ce66  __mspabi_srai_3              
-0000ce68  __mspabi_srai_2              
-0000ce6a  __mspabi_srai_1              
-0000ce6e  usci_uart_tx_process         
-0000ce9a  cmd_control                  
-0000cec4  cmd_read                     
-0000ceee  cmd_sensor                   
-0000cf18  cmd_sig                      
-0000cf40  usci_uart_puts               
-0000cf7e  _c_int00_noargs_noexit       
-0000cf98  cmd_dump                     
-0000cfaa  __TI_decompress_none         
-0000cfbc  memcpy                       
-0000cfcc  __mspabi_func_epilog_7       
-0000cfce  __mspabi_func_epilog_6       
-0000cfd0  __mspabi_func_epilog_5       
-0000cfd2  __mspabi_func_epilog_4       
-0000cfd4  __mspabi_func_epilog_3       
-0000cfd6  __mspabi_func_epilog_2       
-0000cfd8  __mspabi_func_epilog_1       
-0000cfdc  timeout_isr                  
-0000cfec  cmd_flash                    
-0000cffa  arafe_send_command           
-0000d002  cli_print_prompt             
-0000d00a  __TI_ISR_TRAP                
-0000d010  _system_pre_init             
-0000d014  C$$EXIT                      
-0000d014  abort                        
-0000d018  event_ignore                 
-0000d2c6  __TI_Handler_Table_Base      
-0000d2c8  __TI_CINIT_Base              
-0000d2c8  __TI_Handler_Table_Limit     
-0000d2cc  __TI_CINIT_Limit             
+0000c766  cli_process_char             
+0000c8ca  usci_uart_printf             
+0000c9f6  check_arguments              
+0000cace  main                         
+0000cd30  _auto_init                   
+0000cd88  usci_rx_char                 
+0000cdc4  cmd_12v                      
+0000cdf4  cmd_5v                       
+0000ce24  cmd_trig                     
+0000ce50  cmd_write                    
+0000ce7c  __mspabi_srai                
+0000ce88  __mspabi_srai_15             
+0000ce8a  __mspabi_srai_14             
+0000ce8c  __mspabi_srai_13             
+0000ce8e  __mspabi_srai_12             
+0000ce90  __mspabi_srai_11             
+0000ce92  __mspabi_srai_10             
+0000ce94  __mspabi_srai_9              
+0000ce96  __mspabi_srai_8              
+0000ce98  __mspabi_srai_7              
+0000ce9a  __mspabi_srai_6              
+0000ce9c  __mspabi_srai_5              
+0000ce9e  __mspabi_srai_4              
+0000cea0  __mspabi_srai_3              
+0000cea2  __mspabi_srai_2              
+0000cea4  __mspabi_srai_1              
+0000cea8  usci_uart_tx_process         
+0000ced4  cmd_control                  
+0000cefe  cmd_read                     
+0000cf28  cmd_sensor                   
+0000cf52  cmd_sig                      
+0000cf7a  usci_uart_puts               
+0000cfb8  _c_int00_noargs_noexit       
+0000cfd2  cmd_dump                     
+0000cfe4  __TI_decompress_none         
+0000cff6  memcpy                       
+0000d006  __mspabi_func_epilog_7       
+0000d008  __mspabi_func_epilog_6       
+0000d00a  __mspabi_func_epilog_5       
+0000d00c  __mspabi_func_epilog_4       
+0000d00e  __mspabi_func_epilog_3       
+0000d010  __mspabi_func_epilog_2       
+0000d012  __mspabi_func_epilog_1       
+0000d016  timeout_isr                  
+0000d026  cmd_flash                    
+0000d034  arafe_send_command           
+0000d03c  cli_print_prompt             
+0000d044  __TI_ISR_TRAP                
+0000d04a  _system_pre_init             
+0000d04e  C$$EXIT                      
+0000d04e  abort                        
+0000d052  event_ignore                 
+0000d314  __TI_Handler_Table_Base      
+0000d316  __TI_CINIT_Base              
+0000d316  __TI_Handler_Table_Limit     
+0000d31a  __TI_CINIT_Limit             
 0000ffe0  __TI_int00                   
 0000ffe4  __TI_int02                   
 0000ffe6  __TI_int03                   
@@ -588,4 +591,4 @@ ffffffff  binit
 UNDEFED   __TI_INITARRAY_Base          
 UNDEFED   __TI_INITARRAY_Limit         
 
-[199 symbols]
+[200 symbols]
