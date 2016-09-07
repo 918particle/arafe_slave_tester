@@ -1,6 +1,8 @@
 /*
  * Test program using an MSP430 LaunchPad for testing an ARAFE quad
  * through a serial port.
+ * Updates
+ * 			9/6/2016: Patrick fixed overflowed TX buffer
  *
  * main.c
  */
@@ -55,7 +57,7 @@ int main(void) {
     __enable_interrupt();
 
 
-	usci_uart_puts("ARAFE Slave Tester: Input values in base 10.\r\n");
+	usci_uart_puts("ARAFE Slave Tester.\r\n");
 	cli_print_prompt();
 	while (1) {
 		event_process();

@@ -64,7 +64,14 @@ void cli_print_notfound(char *strcmd){
  */
 
 
-
+/** \brief Converts argv into arafe_command/argument, and throws error if outside limits.
+ * \param argc From cli interface
+ * \param argv From cli interface
+ * \param num_args Number of arguments to check/build
+ * \param arg1_limit Maximum first argument
+ * \param arg2_limit Maximum second argument
+ * \param errstr Error string to throw.
+ */
 bool check_arguments(uint16_t argc, char *argv[], uint8_t num_args, uint8_t arg1_limit, uint8_t arg2_limit, char *errstr) {
 	//argc -> counts the number of things in argv +1; argv -> holds each input as a slot in an array;  num_args -> number of arguments that the function string expects(NOT INCLUDING STRING),
 	//arg1_limit -> limit for argv[1]; arg2_limit -> limit for argv[2]; errstr -> string for error message
@@ -143,44 +150,42 @@ err_msg:
 int cmd_control(uint16_t argc, char *argv[]) {
 	// Input checking.
 	if (check_arguments(argc, argv, 3, 3, 1, "control 0-3 0/1\r\n")) {
-		arafe_command |= 0x8;
+		arafe_command |= 0xC0;
 		arafe_send_command();
 	}
 	return 0;
 }
 
 int cmd_sig(uint16_t argc, char *argv[]) {
-	if (check_arguments(argc, argv, 3, 3, 31, "sig 0-3 0-31\r\n")) arafe_send_command();
+	if (check_arguments(argc, argv, 3, 3, 127, "sig 0-3 0-127\r\n")) arafe_send_command(); //attenuators have 127 settings
 	return 0;
 }
 
 
 int cmd_trig(uint16_t argc, char *argv[]) {
-	if (check_arguments(argc, argv, 3, 3, 31, "trig 0-3 0-31\r\n")) {
-		arafe_command |= 0x4;
-		arafe_send_command();
-	}
+	if (check_arguments(argc, argv, 3, 3, 127, "trig 0-3 0-127\r\n")) arafe_send_command(); //attenuators have 127 settings
+	arafe_command |= 0x4;
 	return 0;
 }
 
 int cmd_dump(uint16_t argc, char *argv[]) {
 	// All we need to do is change this global variable to true, and tx_char will do the rest.
 	dump_status = 1;
-	arafe_command = 0x40; // Seed for read, do not |=, else it will remember the last command
+	arafe_command = 0x80; // Seed for read, do not |=, else it will remember the last command
 	// No need to seed arafe_argument, as it is normally embedded in the arafe_command
 	arafe_send_command();
 	return 0;
 }
 
 int cmd_flash(uint16_t argc, char *argv[]) {//Flash has no arguments, therefore it doesn't need to be checked by check_arguments
-	arafe_command = 0x20;//Do not raise these bits as in other functions, since they are not checked by check_arguments
+	arafe_command = 0xFF;//Do not raise these bits as in other functions, since they are not checked by check_arguments //flash is 0xFF in 8/31 revision
 	arafe_send_command();
 	return 0;
 }
 
 int cmd_read(uint16_t argc, char *argv[]) {
 	if (check_arguments(argc, argv, 2, 15, 0, "read 0-15\r\n")) {
-		arafe_command |= 0x40;
+		arafe_command |= 0x80; //read is 0x80 in 8/31 revision
 		arafe_send_command();
 		}
 	return 0;
@@ -188,7 +193,7 @@ int cmd_read(uint16_t argc, char *argv[]) {
 
 int cmd_write(uint16_t argc, char *argv[]) {
 	if (check_arguments(argc, argv, 3, 15, 255, "write 0-15 0-255\r\n" )){
-		arafe_command |= 0x80;
+		arafe_command |= 0x90; //write is 0x90 in 8/31 revision
 		arafe_send_command();
 		}
 	return 0;
@@ -196,7 +201,7 @@ int cmd_write(uint16_t argc, char *argv[]) {
 
 int cmd_sensor(uint16_t argc, char *argv[]) {
 	if (check_arguments(argc, argv, 2, 7, 0, "sensor 0-7\r\n")) {
-		arafe_command |= 0x10;
+		arafe_command |= 0x40; //sensor is 0x40 in 8/31 revision
 		arafe_send_command();
 	}
 	return 0;

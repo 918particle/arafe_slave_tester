@@ -29,7 +29,7 @@ usci_uart_RX_ISR_complete:
 	;; Transmit ISR.
 usci_uart_TX_ISR: .asmfunc
 	;; Copy the pending character over.
-	mov.w		&usci_uart_tx_pending, &USCI_UART_TXBUF
+	mov.b		&usci_uart_tx_pending, &USCI_UART_TXBUF
 	;; Now fetch the new one from the buffer, if there is one.
 	cmp.b		&usci_uart_tx_buffer_write_ptr, &usci_uart_tx_buffer_read_ptr
 	;; If equal there isn't one. 2 cycles.

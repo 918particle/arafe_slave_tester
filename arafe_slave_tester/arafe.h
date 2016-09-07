@@ -29,20 +29,20 @@ uint8_t arafe_command;
 uint8_t arafe_argument;
 #endif
 
-#define ARAFE_COMMAND_PING 12
-#define ARAFE_COMMAND_5V 13
-#define ARAFE_COMMAND_12V 14 //???????????????????????
-#define ARAFE_COMMAND_FLASH 32
-//< Commands 0-3 are signal attenuator set
+#define ARAFE_COMMAND_PING 12 //not sure if this is the right ping for 8/31 slave
+#define ARAFE_COMMAND_5V 0xC4 //
+#define ARAFE_COMMAND_12V 0xC5
+#define ARAFE_COMMAND_FLASH 0xFF
+//< Commands 00-03 are signal attenuator set
 #define ARAFE_COMMAND_SIG 0
-//< Commands 4-7 are trigger attenuator set
-#define ARAFE_COMMAND_TRIG 4
-//< Commands 8-11 are power enable
-#define ARAFE_COMMAND_CONTROL 8
-//< Commands 128-143 are device info writes
-#define ARAFE_COMMAND_WRITE 128
-//< Commands 64-79 are device info reads
-#define ARAFE_COMMAND_READ 64
+//< Commands 04-07 are trigger attenuator set
+#define ARAFE_COMMAND_TRIG 0
+//< Commands Cx are power enable
+#define ARAFE_COMMAND_CONTROL 0xC
+//< Commands 9x are device info writes
+#define ARAFE_COMMAND_WRITE 90
+//< Commands 8x are device info reads
+#define ARAFE_COMMAND_READ 80
 
 
 
