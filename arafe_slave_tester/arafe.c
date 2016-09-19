@@ -115,7 +115,7 @@ void arafe_tx_handler() {
 								// check if it's sig or trig
 								//remember 0x00 -> 0x03 -> are the sig commands while 0x04->0x07 are the trig commands
 								//so if we "and" 0x04 with 0x04 and above, we get a true, and realize it's a trig command
-								//so if we "and" 0x04 with 0x03 and below, we get a true, and we relegate that to the else statement to ack the sig
+								//so if we "and" 0x04 with 0x03 and below, we get a false, and we relegate that to the else statement to ack the sig
 								if (received_char[3] & 0x4) // if true, this is trig
 									//so, 0x07 - 0x04 returns 0x03, which is channel 3, which is the channel we intended to program
 									usci_uart_printf("trig %i", (received_char[3] - 0x04)); //subtract 4 from it, because want to print out the channel number
