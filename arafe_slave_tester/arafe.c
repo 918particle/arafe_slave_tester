@@ -107,17 +107,101 @@ void arafe_tx_handler() {
 
 					usci_uart_printf("Acknowledged Command of Type: ");
 
-					if (received_char[3] & 0x80) usci_uart_printf("write %i\r\n\r\n", (received_char[3] & 0xF));
-					else if (received_char[3] & 0x40) usci_uart_printf("read %i \r\nReturned: %x \r\n\r\n", (received_char[3] & 0xF), received_char[4]);
-					else if (received_char[3] & 0x20) usci_uart_printf("flash\r\n\r\n");
+					//going to set up a switch logic table to figure out what ack to deliver
+					if(received_char[3] == 0xFF) usci_uart_printf("flash"); //check flash, which is special
+					else {
+						switch (received_char[3] & 0xC0) {
+							case 0x00: // attenuator
+								// check if it's sig or trig
+								//remember 0x00 -> 0x03 -> are the sig commands while 0x04->0x07 are the trig commands
+								//so if we "and" 0x04 with 0x04 and above, we get a true, and realize it's a trig command
+								//so if we "and" 0x04 with 0x03 and below, we get a true, and we relegate that to the else statement to ack the sig
+								if (received_char[3] & 0x4) // if true, this is trig
+									//so, 0x07 - 0x04 returns 0x03, which is channel 3, which is the channel we intended to program
+									usci_uart_printf("trig %i", (received_char[3] - 0x04)); //subtract 4 from it, because want to print out the channel number
+								else // otherwise, it's a sig
+									//because the sig commands are 0x00 and 0x03, we don't need to adjust anything before returning the channel we issued the command to
+									usci_uart_printf("sig %i", (received_char[3]));
+								break;
+							case 0x40: // sensor
+								//the sensor commands are 0x40, 0x41, 0x42, and 0x43 for the first three sensors
+								//0x44 through 0x47 give the last two bits of the ADC
+								//put the logic table in here
+								usci_uart_printf("sensor %i \r\nReturned: %x", (received_char[3] & 0xF), received_char[4]);
+								//cout, I need to put something in here to handle the retreiving of the last two bits of the ADC, which are commands 44->47
+								break;
+							case 0x80: // info
+								// check if it's a read or a write
+								//remember, 0x85 would say read device info 5, while 0x95 would say write device info five
+								//the logic is easiest to see in binary
+								//for example, 0x85 would translate to 1000 0101 and 0x95 would be 1001 0101 and, 0x10 is 0001 0000
+								//so, if we "and" 0x10 into 0x85, we get a false, and conclude it is a read
+								//if we "and" 0x10 into 0x95 and get a true, we conclude it is a write
+								if (received_char[3] & 0x10) // if true, this is a write
+									//"and" against 0XFF (0000 1111) will clear the front numbers, but will preserve the device information
+									usci_uart_printf("write %i", (received_char[3] & 0xF));
+								else //otherise, it's false, and this is a read
+									usci_uart_printf("read %i \r\nReturned: %x", (received_char[3] & 0xF), received_char[4]);
+									//"and" against 0XFF (0000 1111) will clear the front numbers, but will preserve the device information
+								break;
+							case 0xC0: // misc
+								//remember, C0, C1, C2, and C3 are the 12V enable for the four channels
+								//while C4 and C5 are the global on and off for the 5V and 12 regulator
+								//so if we "and" with 0x4, and return true, then we are dealing with the global on and off
+								//if false, then we should be up in C0, C1, C2, and C3
+								/*
+								 //logic table
+								C0: 1100 0000
+								C1: 1100 0001
+								C2: 1100 0010
+								C3: 1100 0011
+
+								C4: 1100 0100
+								C5: 1100 0101
+
+								01: 0000 0001
+								02: 0000 0010
+								03: 0000 0011
+								04: 0000 0100
+
+								C4: 1100 0100 //5v case
+							 &	01: 0000 0001
+								false
+
+								C5: 1100 0101 //12v case
+							 &  01: 0000 0001
+							 	true
+							 	*/
+
+								if (received_char[3] & 0x4){ // if true, this is a global 5 or 12 V on or off
+									if ((received_char[3] & 0x4) & 0x01) //this is a 12v global enable
+										usci_uart_printf("12v regulator enable");
+									else //this is a 5v global enable
+										usci_uart_printf("5v regulator enable");
+									break; //we're done
+								}
+								else //it's one of the individual line enables, and we just want to read out the channel you were trying to control
+									usci_uart_printf("control %i", (received_char[3] & 0xF ));
+								break;
+						}
+					}
+					usci_uart_printf("\r\n\r\n"); //conclude with this to create a newline after the previous print out
+
+					//The old routine by T. Erjavec
+					/*
+					if (received_char[3] & 0x80) usci_uart_printf("write %i\r\n\r\n", (received_char[3] & 0xF)); //done
+					else if (received_char[3] & 0x40) usci_uart_printf("read %i \r\nReturned: %x \r\n\r\n", (received_char[3] & 0xF), received_char[4]); //done
+					else if (received_char[3] & 0x20) usci_uart_printf("flash\r\n\r\n"); //done
 					else if (received_char[3] & 0x10) usci_uart_printf("sensor %i \r\nReturned: %x \r\n\r\n", (received_char[3] & 0x7), received_char[4]);
-					else if ( !(received_char[3] & 0x08) ) {
+					else if ( !(received_char[3] & 0x08) ) { //done
 						if (received_char[3] & 0x04) usci_uart_printf("trig %i\r\n\r\n", (received_char[3] - 0x04));
 						else {usci_uart_printf("sig %i\r\n\r\n", (received_char[3]));}
 					}
-					else if ( !(received_char[3] & 0x04) ) usci_uart_printf("control %i\r\n\r\n", (received_char[3] - 0x08 ) );
-					else if ( ((received_char[3] & 0x03) & 0x1) ) usci_uart_printf("5v\r\n\r\n");
-					else if ( ((received_char[3] & 0x03) & 0x2) ) usci_uart_printf("12v\r\n\r\n"); //*******************
+					else if ( !(received_char[3] & 0x04) ) usci_uart_printf("control %i\r\n\r\n", (received_char[3] - 0x08 ) ); //done
+					else if ( ((received_char[3] & 0x03) & 0x1) ) usci_uart_printf("5v\r\n\r\n"); //done
+					else if ( ((received_char[3] & 0x03) & 0x2) ) usci_uart_printf("12v\r\n\r\n"); //done
+					*/
+
 				}// **Note: We could technically use arafe_argument in the output, but we don't get that back from slave, so it really doesn't ensure that slave "got and executed" that argument
 
 				// If we are dumping, and haven't reached end of device_info, re-loop and transmit again with another device_info entity after
