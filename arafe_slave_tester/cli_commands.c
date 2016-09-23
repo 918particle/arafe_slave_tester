@@ -57,8 +57,8 @@ void cli_print_notfound(char *strcmd){
  * control #0 #1 where #0 = 0,1,2,3 and #1 = 0,1 (for on, off)
  * 5v # where #=0,1
  * 12v # where #=0,1
- * sig #0 #1 where #0=0,1,2,3 and #1 = 0-31.
- * trig #0 #1 where #0=0,1,2,3 and #1 = 0-31.
+ * sig #0 #1 where #0=0,1,2,3 and #1 = 0-127.
+ * trig #0 #1 where #0=0,1,2,3 and #1 = 0-127.
  * sensor #0-2
  *
  */
@@ -163,8 +163,10 @@ int cmd_sig(uint16_t argc, char *argv[]) {
 
 
 int cmd_trig(uint16_t argc, char *argv[]) {
-	if (check_arguments(argc, argv, 3, 3, 127, "trig 0-3 0-127\r\n")) arafe_send_command(); //attenuators have 127 settings
-	arafe_command |= 0x4;
+	if (check_arguments(argc, argv, 3, 3, 127, "trig 0-3 0-127\r\n")){
+		arafe_command |= 0x4;
+		arafe_send_command(); //attenuators have 127 settings
+	}
 	return 0;
 }
 

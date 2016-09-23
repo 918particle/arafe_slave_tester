@@ -79,8 +79,7 @@ void arafe_tx_handler() {
 
 					// If counter = 0, then print header to screen
 					if ( m == 0) {
-					usci_uart_printf("Dumping device_info_buffer[]: Beep boop"); //Remove the sass before final revision. Maybe.
-					usci_uart_printf("\r\n");
+					usci_uart_printf("device_info_buffer[]: \r\n");
 					}
 
 					usci_uart_printf("%x ", received_char[4]);
@@ -149,34 +148,10 @@ void arafe_tx_handler() {
 								//while C4 and C5 are the global on and off for the 5V and 12 regulator
 								//so if we "and" with 0x4, and return true, then we are dealing with the global on and off
 								//if false, then we should be up in C0, C1, C2, and C3
-								/*
-								 //logic table
-								C0: 1100 0000
-								C1: 1100 0001
-								C2: 1100 0010
-								C3: 1100 0011
-
-								C4: 1100 0100
-								C5: 1100 0101
-
-								01: 0000 0001
-								02: 0000 0010
-								03: 0000 0011
-								04: 0000 0100
-
-								C4: 1100 0100 //5v case
-							 &	01: 0000 0001
-								false
-
-								C5: 1100 0101 //12v case
-							 &  01: 0000 0001
-							 	true
-							 	*/
-
 								if (received_char[3] & 0x4){ // if true, this is a global 5 or 12 V on or off
-									if ((received_char[3] & 0x4) & 0x01) //this is a 12v global enable
+									if (received_char[3] & 0x01) //this is a 12v global enable (only C5 will pass the "and" with 1)
 										usci_uart_printf("12v regulator enable");
-									else //this is a 5v global enable
+									else //this is a 5v global enable (the C4 will fail the "and" with 1)
 										usci_uart_printf("5v regulator enable");
 									break; //we're done
 								}
@@ -204,10 +179,8 @@ void arafe_tx_handler() {
 
 				}// **Note: We could technically use arafe_argument in the output, but we don't get that back from slave, so it really doesn't ensure that slave "got and executed" that argument
 
-				// If we are dumping, and haven't reached end of device_info, re-loop and transmit again with another device_info entity after
-				// it has listened and printed out the transmission from the slave board
 				if(dump_status == 1) {
-					if (arafe_command < 0x4F) { // 16 values in device_info, array ordering 0-15. Corresponds to commands 64-79 (0x40-0x4F)
+					if((arafe_command & 0xF) < 0xF){ // 16 values in device_info, array ordering 0-15. Corresponds to commands 64-79 (0x40-0x4F)
 						arafe_command++; // Increment device_info position(embeded in actual arafe_command)
 						__delay_cycles(128000); //  Add delay, the tester sends a command so quickly that the slave can't keep up
 						arafe_send_command(); // Recall the switch loop and reset state to STATE_PREAMBLE_0
@@ -218,6 +191,10 @@ void arafe_tx_handler() {
 						usci_uart_printf("\r\n");
 					}
 				}
+
+
+				// If we are dumping, and haven't reached end of device_info, re-loop and transmit again with another device_info entity after
+				// it has listened and printed out the transmission from the slave board
 			}
 
 			state = STATE_IDLE;
@@ -225,7 +202,6 @@ void arafe_tx_handler() {
 
 		}
 		 if (!(state == STATE_IDLE)) { // This needs to stay. If it doesn't everything breaks.
-			 state++; // If state has nto been set to idle, carry on as usual
+			 state++; // If state has not been set to idle, carry on as usual
 		 }
-		//state++;
 	}
